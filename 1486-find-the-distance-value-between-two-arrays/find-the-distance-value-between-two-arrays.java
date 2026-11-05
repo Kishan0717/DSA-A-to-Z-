@@ -1,0 +1,36 @@
+import java.util.Arrays;
+
+class Solution {
+    public int findTheDistanceValue(int[] arr1, int[] arr2, int d) {
+        Arrays.sort(arr2);
+        int distanceValue = 0;
+        
+        for (int x : arr1) {
+            int idx = Arrays.binarySearch(arr2, x);
+            boolean isValid = true;
+            
+            if (idx >= 0) {
+                // Exact match found in arr2
+                isValid = false;
+            } else {
+                int insertionPoint = -idx - 1;
+                
+                // Check the element to the right of the insertion point
+                if (insertionPoint < arr2.length && Math.abs(arr2[insertionPoint] - x) <= d) {
+                    isValid = false;
+                }
+                
+                // Check the element to the left of the insertion point
+                if (insertionPoint > 0 && Math.abs(arr2[insertionPoint - 1] - x) <= d) {
+                    isValid = false;
+                }
+            }
+            
+            if (isValid) {
+                distanceValue++;
+            }
+        }
+        
+        return distanceValue;
+    }
+}
